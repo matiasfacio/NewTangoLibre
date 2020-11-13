@@ -1,0 +1,101 @@
+import React, { createContext, useReducer, useEffect } from "react";
+
+export const StudentsContext = createContext();
+
+const studentsReducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_STUDENT":
+      return [...state, action.Student];
+    case "INIT":
+      return action.data;
+    case "DEL_STUDENT":
+      return state.filter((t, index) => {
+        return index !== action.index;
+      });
+    default:
+      return state;
+  }
+};
+
+const StudentContextProvider = (props) => {
+  const [Students, dispatch] = useReducer(studentsReducer, []);
+
+  useEffect(() => {
+    updateData();
+  }, []);
+
+  const createStudent = (studentToAdd) => {
+    const body = JSON.stringify(studentToAdd);
+
+    fetch("http://localhost:9000/Addstudent", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: body,
+    })
+      .catch((err) => {
+        console.log(err);
+      })
+      .then(() => updateData());
+  };
+
+  const deleteStudent = (indexToDelete) => {
+    fetch(`http://localhost:9000/Delstudent/${indexToDelete}`, {
+      method: "DELETE",
+    })
+      .catch((err) => {
+        console.log(err);
+      })
+      .then(() => updateData());
+  };
+
+  const checkinStudent = (id, date) => {
+    fetch(`http://localhost:9000/checkin/:${id}`, {
+      method: 'POST',
+      mode: "no-cors",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: date,
+    })
+  }
+
+  const createClass = (info) => {
+    // console.log('info:',info);
+    const infoJson = JSON.stringify(info);
+    // console.log('json: ',infoJson)
+    fetch('http://localhost:9000/createClass', {
+      method: 'POST',
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: infoJson,
+    })
+  }
+
+
+  const updateData = () => {
+    fetch("http://localhost:9000/allStudents")
+      .then((response) => response.json())
+      .then((data) => dispatch({ type: "INIT", data: data }))
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  return (
+    <StudentsContext.Provider
+      value={{ Students, dispatch, createStudent, deleteStudent, checkinStudent, createClass }}
+    >
+      {props.children}
+    </StudentsContext.Provider>
+  );
+};
+
+export default StudentContextProvider;
