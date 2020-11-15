@@ -16,7 +16,6 @@ const Checkingin = () => {
   return (
     <FullContainer>
       <CheckingContainer>
-        {/* <h3>Checking in:</h3> */}
         <Form
           onSubmit={(e) => {
             e.preventDefault();
@@ -25,32 +24,38 @@ const Checkingin = () => {
             setDisplayCheckin(true);
           }}
         >
-          <h3>First Create a Class</h3>
-          <label>Date: </label>
-          <input
-            type="date"
-            placeholder="dd/mm/yyyy"
-            name="date"
-            required
-            onChange={(e) => setChecked({ ...checked, Date: e.target.value })}
-          />
-          <label>First Class</label>
-          <input
-            type="radio"
-            id="firstClass"
-            name="class"
-            value="1"
-            required
-            onChange={(e) => setChecked({ ...checked, Class: e.target.value })}
-          />
-          <label>Second Class</label>
-          <input
-            type="radio"
-            id="secondClass"
-            name="class"
-            value="2"
-            onChange={(e) => setChecked({ ...checked, Class: e.target.value })}
-          />
+          <SubForm>
+            <h3>First Create a Class</h3>
+            <label>Date: </label>
+            <input
+              type="date"
+              placeholder="dd/mm/yyyy"
+              name="date"
+              required
+              onChange={(e) => setChecked({ ...checked, Date: e.target.value })}
+            />
+            <label>First Class</label>
+            <input
+              type="radio"
+              id="firstClass"
+              name="class"
+              value="1"
+              required
+              onChange={(e) =>
+                setChecked({ ...checked, Class: e.target.value })
+              }
+            />
+            <label>Second Class</label>
+            <input
+              type="radio"
+              id="secondClass"
+              name="class"
+              value="2"
+              onChange={(e) =>
+                setChecked({ ...checked, Class: e.target.value })
+              }
+            />
+          </SubForm>
           <ButtonSubmit type="submit">New Class</ButtonSubmit>
         </Form>
 
@@ -59,7 +64,6 @@ const Checkingin = () => {
         {displayCheckin ? (
           <div>
             <ContainerCheckinForm>
-              
               <Form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -71,16 +75,18 @@ const Checkingin = () => {
                     .catch((err) => console.log(err));
                 }}
               >
-                <h3>Check in</h3>
-                <label>Student Name:</label>
-                <input
-                  ref={studenRef}
-                  type="text"
-                  name="studentName"
-                  value={StudentNameSearch}
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <button type="submit">Search</button>
+                <SubForm>
+                  <h3>Check in</h3>
+                  <label>Student Name:</label>
+                  <input
+                    ref={studenRef}
+                    type="text"
+                    name="studentName"
+                    value={StudentNameSearch}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                  <button type="submit">Search</button>
+                </SubForm>
               </Form>
 
               <div>
@@ -117,12 +123,11 @@ const Checkingin = () => {
                           >
                             Check
                           </button>
-                          <Footer>{added ? "Added!" : ""}</Footer>
-                          
                         </div>
                       );
                     })
                   : ""}
+                  <Footer>{added ? "Added!" : ""}</Footer>
               </div>
             </ContainerCheckinForm>
           </div>
@@ -131,36 +136,38 @@ const Checkingin = () => {
         )}
       </CheckingContainer>
 
-      { checked.Students.length > 0 
-      ? <FinishButton
-      onClick={() => {
-        createClass(checked);
-        setDisplayCheckin(false);
-        setChecked({
-          Students: [],
-        })
-      }}
-    >
-      Finish Check-in
-    </FinishButton>
-    :''
-    }
-      
-      {checked.Students.length > 0
-       ? <ProvisoryList>
-        <h3>Checked</h3>
-        <List>
-        {checked.Students.map((p, q) => {
+      {checked.Students.length > 0 ? (
+        <FinishButton
+          onClick={() => {
+            createClass(checked);
+            setDisplayCheckin(false);
+            setChecked({
+              Students: [],
+            });
+          }}
+        >
+          Finish Check-in
+        </FinishButton>
+      ) : (
+        ""
+      )}
+
+      {checked.Students.length > 0 ? (
+        <ProvisoryList>
+          <h3>Checked</h3>
+          <List>
+            {checked.Students.map((p, q) => {
               return (
                 <div key={q}>
                   {p[1]} {p[2]}
                 </div>
               );
-            })
-          }
+            })}
           </List>
-      </ProvisoryList>
-      :''}
+        </ProvisoryList>
+      ) : (
+        ""
+      )}
     </FullContainer>
   );
 };
@@ -173,25 +180,25 @@ export const List = styled.div`
   width: 200px;
   height: 270px;
   overflow-y: scroll;
-`
+`;
 
 export const ProvisoryList = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 150px;
   margin-left: 20px;
-`
+`;
 
 export const FullContainer = styled.div`
   display: flex;
   width: 1200px;
   justify-content: space-between;
-`
+`;
 
 export const Footer = styled.div`
   background-color: rgba(0, 0, 0, 0);
   padding: 5px 10px;
-  color: black;
+  color: crimson;
 `;
 
 export const ContainerCheckinForm = styled.div`
@@ -211,7 +218,7 @@ export const CheckingContainer = styled.div`
 
 export const Form = styled.form`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   border-left: 1px black dotted;
   padding: 10px;
   & > input {
@@ -219,16 +226,26 @@ export const Form = styled.form`
   }
 `;
 
+export const SubForm = styled.div`
+  height: 250px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`;
+
 export const ButtonSubmit = styled.button`
-  background-color: white;
-  color: crimson;
+  background-color: crimson;
+  color: white;
   padding: 3px 10px;
   margin-top: 30px;
   font-size: 1rem;
   display: inline-block;
   width: 100px;
+  font-weight: bolder;
+  box-shadow: 1px 1px 5px black;
   &:hover {
-    background: crimson;
+    background: gray;
     color: white;
   }
 `;
@@ -237,7 +254,8 @@ export const FinishButton = styled.button`
   background-color: crimson;
   color: white;
   box-shadow: 1px 1px 5px black;
-  &:hover{
-    background-color: rgb(204, 162, 171);
+  font-weight: bolder;
+  &:hover {
+    background-color: gray;
   }
-`
+`;
