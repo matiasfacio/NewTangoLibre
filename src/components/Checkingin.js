@@ -130,31 +130,37 @@ const Checkingin = () => {
           ""
         )}
       </CheckingContainer>
-      <button
-              onClick={() => {
-                createClass(checked);
-                setDisplayCheckin(false);
-                setChecked({
-                  Students: [],
-                })
-              }}
-            >
-              Finish Check-in
-            </button>
-      <ProvisoryList>
+
+      { checked.Students.length > 0 
+      ? <FinishButton
+      onClick={() => {
+        createClass(checked);
+        setDisplayCheckin(false);
+        setChecked({
+          Students: [],
+        })
+      }}
+    >
+      Finish Check-in
+    </FinishButton>
+    :''
+    }
+      
+      {checked.Students.length > 0
+       ? <ProvisoryList>
         <h3>Checked</h3>
         <List>
-        {checked.Students.length > 0
-          ? checked.Students.map((p, q) => {
+        {checked.Students.map((p, q) => {
               return (
                 <div key={q}>
                   {p[1]} {p[2]}
                 </div>
               );
             })
-          : ""}
+          }
           </List>
       </ProvisoryList>
+      :''}
     </FullContainer>
   );
 };
@@ -226,3 +232,12 @@ export const ButtonSubmit = styled.button`
     color: white;
   }
 `;
+
+export const FinishButton = styled.button`
+  background-color: crimson;
+  color: white;
+  box-shadow: 1px 1px 5px black;
+  &:hover{
+    background-color: rgb(204, 162, 171);
+  }
+`

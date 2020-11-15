@@ -33,6 +33,10 @@ a:hover {
   color: white;
 }
 
+/* button {
+  box-shadow: ;
+} */
+
 
 ::-webkit-scrollbar {
   width: 10px;
@@ -55,3 +59,12 @@ a:hover {
 input {
   max-width: 150px;
 }
+
+input[type="radio"]{
+  background-color: crimson;
+}
+
+input[type="radio"]::checked {
+  color: rgb(204, 162, 171);
+}
+
