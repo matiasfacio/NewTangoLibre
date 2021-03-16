@@ -27,7 +27,25 @@ const StudentContextProvider = (props) => {
   const createStudent = (studentToAdd) => {
     const body = JSON.stringify(studentToAdd);
 
-    fetch("http://localhost:9000/Addstudent", {
+    fetch("/Addstudent", { 
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: body,
+    })
+      .catch((err) => {
+        console.log(err);
+      })
+      .then(() => updateData());
+  };
+
+  const editStudent = (studentToEdit) => {
+    const body = JSON.stringify(studentToEdit);
+
+    fetch("/Editstudent", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -43,7 +61,7 @@ const StudentContextProvider = (props) => {
   };
 
   const deleteStudent = (indexToDelete) => {
-    fetch(`http://localhost:9000/Delstudent/${indexToDelete}`, {
+    fetch(`/Delstudent/${indexToDelete}`, {
       method: "DELETE",
     })
       .catch((err) => {
@@ -53,7 +71,7 @@ const StudentContextProvider = (props) => {
   };
 
   const checkinStudent = (id, date) => {
-    fetch(`http://localhost:9000/checkin/:${id}`, {
+    fetch(`/checkin/:${id}`, {
       method: 'POST',
       mode: "no-cors",
       headers: {
@@ -65,10 +83,9 @@ const StudentContextProvider = (props) => {
   }
 
   const createClass = (info) => {
-    // console.log('info:',info);
     const infoJson = JSON.stringify(info);
     // console.log('json: ',infoJson)
-    fetch('http://localhost:9000/createClass', {
+    fetch('/createClass', {
       method: 'POST',
       mode: "cors",
       headers: {
@@ -81,7 +98,7 @@ const StudentContextProvider = (props) => {
 
 
   const updateData = () => {
-    fetch("http://localhost:9000/allStudents")
+    fetch("/allStudents")
       .then((response) => response.json())
       .then((data) => dispatch({ type: "INIT", data: data }))
       .catch((error) => {
@@ -91,7 +108,7 @@ const StudentContextProvider = (props) => {
 
   return (
     <StudentsContext.Provider
-      value={{ Students, dispatch, createStudent, deleteStudent, checkinStudent, createClass }}
+      value={{ Students, dispatch, createStudent, deleteStudent, checkinStudent, createClass, editStudent }}
     >
       {props.children}
     </StudentsContext.Provider>

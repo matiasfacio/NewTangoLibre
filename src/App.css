@@ -33,6 +33,19 @@ a:hover {
   color: white;
 }
 
+.aboutMe {
+  line-height: 2;
+}
+
+.aboutMe a {
+  padding: 0px;
+  margin:0;
+}
+
+.aboutMe img {
+  padding-right: 10px;
+}
+
 /* button {
   box-shadow: ;
 } */

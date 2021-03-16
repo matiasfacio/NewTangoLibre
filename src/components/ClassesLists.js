@@ -4,7 +4,7 @@ import styled from "styled-components";
 const ClassesLists = () => {
   const [Loading, setLoading] = useState(true);
   const [classes, setClasses] = useState(() =>
-    fetch("http://localhost:9000/allClasses")
+    fetch("/allClasses")
       .then((response) => response.json())
       .then((data) => setClasses(data))
       .then(() => setLoading(false))
@@ -14,7 +14,7 @@ const ClassesLists = () => {
   );
 
   useEffect(() => {
-    fetch("http://localhost:9000/allClasses")
+    fetch("/allClasses")
       .then((response) => response.json())
       .then((data) => setClasses(data))
       .catch((err) => {

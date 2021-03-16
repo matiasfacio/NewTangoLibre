@@ -1,12 +1,14 @@
 import React, { useState, useContext, useRef } from "react";
 import styled from "styled-components";
 import { StudentsContext } from "../contexts/StudentsContext";
+import ShowStudents from "./ShowStudents";
 
 const Checkingin = () => {
   const { createClass } = useContext(StudentsContext);
   const [StudentNameSearch, setName] = useState("");
   const [added, setAdded] = useState(false);
   const [answerSearch, setSearch] = useState("");
+  const [finishedCheckin, setFinishedChekin] = useState(false)
   const [displayCheckin, setDisplayCheckin] = useState(false);
   const [checked, setChecked] = useState({
     Students: [],
@@ -22,6 +24,7 @@ const Checkingin = () => {
             const dateType = new Date(checked.date);
             setChecked({ ...checked, date: dateType });
             setDisplayCheckin(true);
+            setFinishedChekin(false)
           }}
         >
           <SubForm>
@@ -127,7 +130,7 @@ const Checkingin = () => {
                       );
                     })
                   : ""}
-                  <Footer>{added ? "Added!" : ""}</Footer>
+                <Footer>{added ? "Added!" : ""}</Footer>
               </div>
             </ContainerCheckinForm>
           </div>
@@ -144,6 +147,7 @@ const Checkingin = () => {
             setChecked({
               Students: [],
             });
+            setFinishedChekin(!finishedCheckin)
           }}
         >
           Finish Check-in
@@ -168,6 +172,7 @@ const Checkingin = () => {
       ) : (
         ""
       )}
+      <ShowStudents />
     </FullContainer>
   );
 };
